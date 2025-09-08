@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0b0c0f;
+  --fg: #0b0c0f;
+  --muted: #6b7280;
+  --primary: #2563eb;
+  --primary-fg: #ffffff;
+  --secondary: #10b981;
+  --secondary-fg: #0b0c0f;
+  --danger: #ef4444;
+  --danger-fg: #ffffff;
+}
+
+/* Light by default */
+html {
+  color-scheme: light;
+}
+body {
+  @apply bg-white text-gray-900;
+}
+
+.dark {
+  --bg: #0b0c0f;
+  --fg: #f3f4f6;
+  --muted: #9ca3af;
+  --primary: #60a5fa;
+  --primary-fg: #0b0c0f;
+  --secondary: #34d399;
+  --secondary-fg: #0b0c0f;
+  --danger: #f87171;
+  --danger-fg: #0b0c0f;
+}
+
+.dark html { color-scheme: dark; }
+.dark body { @apply bg-gray-950 text-gray-100; }
+
+/* Base typography */
+h1 { @apply text-3xl font-semibold; }
+h2 { @apply text-2xl font-semibold; }
+h3 { @apply text-xl font-semibold; }
+p { @apply leading-7; }
+
+/* Forms */
+label { @apply text-sm text-gray-600 dark:text-gray-300; }
+input, textarea, select { @apply rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 outline-none focus:ring-2 focus:ring-primary; }
+button { @apply outline-none; }
+
+/* Utilities */
+.container { @apply max-w-5xl mx-auto px-4; }
+
