@@ -50,4 +50,3 @@ button { @apply outline-none; }
 
 /* Utilities */
 .container { @apply max-w-5xl mx-auto px-4; }
-
