@@ -1,24 +1,12 @@
 "use client"
-import 'leaflet/dist/leaflet.css'
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
-import { useState } from 'react'
-import { LatLngExpression } from 'leaflet'
+import LocationMap from '@/components/ui/Map'
 
-export default function MapClient() {
-  const center: LatLngExpression = [51.505, -0.09]
-  const [position] = useState(center)
+interface MapClientProps {
+  address?: string;
+  latitude?: number;
+  longitude?: number;
+}
 
-  return (
-    <div className="h-[400px] w-full overflow-hidden rounded-lg border border-gray-200 dark:border-gray-800">
-      <MapContainer center={position} zoom={13} scrollWheelZoom={false} style={{ height: '100%', width: '100%' }}>
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <Marker position={position}>
-          <Popup>Example marker.</Popup>
-        </Marker>
-      </MapContainer>
-    </div>
-  )
+export default function MapClient({ address, latitude, longitude }: Readonly<MapClientProps>) {
+  return <LocationMap address={address} latitude={latitude} longitude={longitude} />
 }
