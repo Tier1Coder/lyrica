@@ -17,7 +17,7 @@ export default function LocationMap({
   height = '400px', 
   width = '100%', 
   className = '' 
-}: LocationMapProps) {
+}: Readonly<LocationMapProps>) {
   const [mapUrl, setMapUrl] = useState<string>('')
 
   useEffect(() => {
