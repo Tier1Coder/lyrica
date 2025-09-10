@@ -82,6 +82,7 @@ export default function SignupPage() {
       router.replace('/dashboard')
       router.refresh()
     } catch (err: any) {
+      console.error('Signup error:', err)
       setError('An unexpected error occurred. Please try again.')
     } finally {
       setLoading(false)
