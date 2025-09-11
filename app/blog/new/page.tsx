@@ -24,7 +24,11 @@ export default function NewPostPage() {
     setLoading(false)
     if (!res.ok) {
       const j = await res.json().catch(() => ({}))
-      setError(j?.error || 'Failed to create post')
+      if (j.setup_required) {
+        setError('Database not set up. Please run the database-schema.sql script in your Supabase dashboard.')
+      } else {
+        setError(j?.error || 'Failed to create post')
+      }
       return
     }
     const { id } = await res.json()

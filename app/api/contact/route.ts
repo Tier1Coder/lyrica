@@ -1,11 +1,10 @@
 import { NextResponse } from 'next/server'
 import { createRouteClient } from '@/lib/supabase/route'
 import { z } from 'zod'
-import { isEmail, safeErrorMessage } from '@/lib/utils'
+import { safeErrorMessage } from '@/lib/utils'
 
 const ContactSchema = z.object({
   name: z.string().min(1).max(200),
-  email: z.string().min(3).max(320).refine(isEmail, 'Invalid email'),
   message: z.string().min(1).max(2000),
 })
 
@@ -15,16 +14,29 @@ export async function POST(req: Request) {
     const json = await req.json()
     const parsed = ContactSchema.safeParse(json)
     if (!parsed.success) return NextResponse.json({ error: 'Invalid input' }, { status: 400 })
+
     const {
       data: { session },
     } = await supabase.auth.getSession()
-    const { name, email, message } = parsed.data
+
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+    }
+
+    const { name, message } = parsed.data
+    const userEmail = session.user.email
+
+    if (!userEmail) {
+      return NextResponse.json({ error: 'User email not found' }, { status: 400 })
+    }
+
     const { error } = await supabase.from('messages').insert({
       name,
-      email,
+      email: userEmail,
       message,
-      user_id: session?.user?.id ?? null,
+      user_id: session.user.id,
     })
+
     if (error) throw error
     return NextResponse.json({ ok: true })
   } catch (e) {

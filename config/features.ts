@@ -4,6 +4,7 @@ const features = {
   useMaps: true,
   useBlog: true,
   useContact: true,
+  useBookings: true,
 } as const
 
 export type Features = typeof features

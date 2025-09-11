@@ -11,7 +11,10 @@ export default async function DashboardPage() {
           <h2>Quick Links</h2>
           <ul className="mt-2 list-disc list-inside text-sm">
             <li><a className="text-primary underline" href="/">Home</a></li>
+            <li><a className="text-primary underline" href="/calendar">Calendar</a></li>
+            <li><a className="text-primary underline" href="/bookings">Bookings</a></li>
             <li><a className="text-primary underline" href="/blog">Blog</a></li>
+            <li><a className="text-primary underline" href="/contact">Contact</a></li>
           </ul>
         </div>
         <div className="rounded-lg border border-gray-200 dark:border-gray-800 p-4">

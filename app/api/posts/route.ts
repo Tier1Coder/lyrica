@@ -30,10 +30,19 @@ export async function POST(req: Request) {
     const supabase = createRouteClient()
     const { data: { session } } = await supabase.auth.getSession()
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
     const json = await req.json()
     const parsed = PostSchema.safeParse(json)
-    if (!parsed.success) return NextResponse.json({ error: 'Invalid input' }, { status: 400 })
+    if (!parsed.success) {
+      return NextResponse.json({
+        error: 'Invalid input',
+        details: parsed.error.issues.map(issue => `${issue.path.join('.')}: ${issue.message}`)
+      }, { status: 400 })
+    }
+
     const { title, content, publish } = parsed.data
+
+    // Try to insert the post
     const { data, error } = await supabase
       .from('posts')
       .insert({
@@ -44,10 +53,24 @@ export async function POST(req: Request) {
       })
       .select('id')
       .single()
-    if (error) throw error
+
+    if (error) {
+      // Check if it's a table not found error
+      if (error.code === 'PGRST205' || error.message?.includes('Could not find the table')) {
+        return NextResponse.json({
+          error: 'Database table not found. Please run the database setup script in your Supabase dashboard.',
+          setup_required: true
+        }, { status: 500 })
+      }
+      throw error
+    }
+
     return NextResponse.json({ id: data.id })
   } catch (e) {
     console.error('POST /api/posts error', e)
-    return NextResponse.json({ error: safeErrorMessage() }, { status: 500 })
+    return NextResponse.json({
+      error: safeErrorMessage(),
+      details: process.env.NODE_ENV === 'development' ? String(e) : undefined
+    }, { status: 500 })
   }
 }
