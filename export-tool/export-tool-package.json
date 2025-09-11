@@ -1,0 +1,18 @@
+{
+  "name": "lyrica-export-tool",
+  "version": "1.0.0",
+  "description": "Export tool for generating customized Lyrica applications",
+  "main": "export-app.js",
+  "scripts": {
+    "export": "node export-app.js",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "Lyrica Team",
+  "license": "MIT"
+}

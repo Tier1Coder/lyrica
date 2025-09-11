@@ -1,4 +1,9 @@
-# Lyrica Modular Export System
+# LyriThe export system consists of:
+
+1. **Feature Definitions** (`export-tool/features.yml`) - Defines all available features, their dependencies, and conflicts
+2. **Modular Structure** (`modules/`) - Organized feature modules
+3. **Export Script** (`export-tool/export-app.js`) - Node.js script to generate customized applications
+4. **CI/CD Integration** (`export-tool/.github/workflows/export.yml`) - Automated export and deployment (optional - removed for solo development)
 
 This document describes the modular export system for the Lyrica Next.js template, which allows you to generate customized versions of your application with only the features you need.
 
@@ -16,6 +21,7 @@ The export system consists of:
 ### features.yml Structure
 
 ```yaml
+# Located at: export-tool/features.yml
 features:
   core:
     name: "Core Application"

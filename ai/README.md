@@ -11,6 +11,12 @@ ai/
 └── README.md      # This file
 ```
 
+## Related Directories
+
+- **`export-tool/`** - Modular export system (features.yml, export-app.js, export-tool-package.json)
+- **`modules/`** - Feature modules for the export system
+- **`config/`** - Application configuration files
+
 ## Documentation Files (docs/)
 
 - **ADMIN-ROLE-SYSTEM-README.md** - Admin role system implementation and usage

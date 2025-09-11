@@ -14,10 +14,10 @@ The included workflow would provide:
 ## 📁 Files Created
 
 ### Core Configuration
-- **`features.yml`** - Feature definitions with dependencies and conflicts
-- **`export-app.js`** - Node.js export script (ES modules compatible)
-- **`export-tool-package.json`** - Dependencies for the export tool
-- **`MODULAR-EXPORT-DOCUMENTATION.md`** - Comprehensive documentation
+- **`export-tool/features.yml`** - Feature definitions with dependencies and conflicts
+- **`export-tool/export-app.js`** - Node.js export script (ES modules compatible)
+- **`export-tool/export-tool-package.json`** - Dependencies for the export tool
+- **`ai/docs/MODULAR-EXPORT-DOCUMENTATION.md`** - Comprehensive documentation
 
 ### CI/CD Integration
 - **`.github/workflows/export.yml`** - GitHub Actions workflow for automated exports
@@ -35,13 +35,13 @@ pnpm add js-yaml
 ### 2. Test the Export System
 ```bash
 # Export minimal app (core + auth)
-node export-app.js --profile minimal --output ./my-minimal-app
+node export-tool/export-app.js --profile minimal --output ./my-minimal-app
 
 # Export blog platform
-node export-app.js --profile blog --output ./my-blog-app
+node export-tool/export-app.js --profile blog --output ./my-blog-app
 
 # Export custom features
-node export-app.js --features auth,blog --output ./my-custom-app
+node export-tool/export-app.js --features auth,blog --output ./my-custom-app
 ```
 
 ### 3. Run the Exported App
