@@ -1,13 +1,12 @@
 import Link from 'next/link'
 import features from '@/config/features'
 import ThemeToggle from './ThemeToggle'
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
+import { createServerClient } from '@/lib/supabase/server'
 import LogoutButton from './LogoutButton'
 import { isAdmin } from '@/lib/auth'
 
 export default async function Navbar() {
-  const supabase = createServerComponentClient({ cookies })
+  const supabase = createServerClient()
   const {
     data: { session },
   } = await supabase.auth.getSession()

@@ -428,7 +428,7 @@ const nextConfig = {
     }
 
     if (selected.includes('auth')) {
-      optimizePackages.push("'@supabase/supabase-js'", "'@supabase/auth-helpers-nextjs'")
+      optimizePackages.push("'@supabase/supabase-js'", "'@supabase/ssr'")
     }
 
     nextConfig += optimizePackages.join(', ') + `

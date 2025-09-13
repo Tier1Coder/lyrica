@@ -11,8 +11,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@supabase/auth-helpers-nextjs": "^0.10.0",
-    "@supabase/supabase-js": "^2.45.3",
+    "@supabase/ssr": "^0.7.0",
+    "@supabase/supabase-js": "^2.57.4",
     "clsx": "^2.1.1",
     "js-yaml": "^4.1.0",
     "leaflet": "^1.9.4",
@@ -22,7 +22,7 @@
     "react-leaflet": "^5.0.0",
     "react-markdown": "^9.0.1",
     "rehype-sanitize": "^6.0.0",
-    "zod": "^3.23.8"
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.14",

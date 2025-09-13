@@ -1,13 +1,12 @@
 import { notFound, redirect } from 'next/navigation'
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
+import { createServerClient } from '@/lib/supabase/server'
 import features from '@/config/features'
 import ContactClient from './ui'
 
 export default async function ContactPage() {
   if (!features.useContact) return notFound()
 
-  const supabase = createServerComponentClient({ cookies })
+  const supabase = createServerClient()
   const {
     data: { session },
   } = await supabase.auth.getSession()
