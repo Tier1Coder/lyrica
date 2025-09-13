@@ -11,7 +11,9 @@ export default async function Navbar() {
     data: { session },
   } = await supabase.auth.getSession()
 
-  const userIsAdmin = session ? await isAdmin(session.user.id) : false
+  const { data: { user } } = await supabase.auth.getUser()
+
+  const userIsAdmin = session ? await isAdmin() : false
 
   return (
     <header className="sticky top-0 z-40 border-b border-gray-200 dark:border-gray-800 bg-white/70 dark:bg-gray-950/70 backdrop-blur">
@@ -30,7 +32,7 @@ export default async function Navbar() {
           <ThemeToggle />
           {session ? (
             <>
-              <span className="hidden sm:inline text-xs text-gray-500 dark:text-gray-400">{session.user.email}</span>
+              <span className="hidden sm:inline text-xs text-gray-500 dark:text-gray-400">{user?.email}</span>
               <LogoutButton />
             </>
           ) : (

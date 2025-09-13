@@ -12,8 +12,8 @@ const PatchSchema = z.object({
 export async function GET(_: Request, { params }: { params: { id: string } }) {
   try {
     const supabase = createRouteClient()
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const { data, error } = await supabase
       .from('events')
       .select('*')
@@ -30,8 +30,8 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
 export async function PATCH(req: Request, { params }: { params: { id: string } }) {
   try {
     const supabase = createRouteClient()
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const json = await req.json()
     const parsed = PatchSchema.safeParse(json)
     if (!parsed.success) return NextResponse.json({ error: 'Invalid input' }, { status: 400 })
@@ -43,7 +43,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
       .from('events')
       .update(update)
       .eq('id', params.id)
-      .eq('user_id', session.user.id)
+      .eq('user_id', user.id)
     if (error) throw error
     return NextResponse.json({ ok: true })
   } catch (e) {
@@ -55,13 +55,13 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
 export async function DELETE(_: Request, { params }: { params: { id: string } }) {
   try {
     const supabase = createRouteClient()
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const { error } = await supabase
       .from('events')
       .delete()
       .eq('id', params.id)
-      .eq('user_id', session.user.id)
+      .eq('user_id', user.id)
     if (error) throw error
     return NextResponse.json({ ok: true })
   } catch (e) {

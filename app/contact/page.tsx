@@ -7,11 +7,9 @@ export default async function ContactPage() {
   if (!features.useContact) return notFound()
 
   const supabase = createServerClient()
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
+  const { data: { user } } = await supabase.auth.getUser()
 
-  if (!session) {
+  if (!user) {
     redirect('/login?redirect=/contact')
   }
 
@@ -21,7 +19,7 @@ export default async function ContactPage() {
       <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
         Send us a message and we'll get back to you soon.
       </p>
-      <ContactClient userEmail={session.user.email} />
+      <ContactClient userEmail={user.email} />
     </div>
   )
 }

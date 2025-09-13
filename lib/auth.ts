@@ -8,14 +8,21 @@ export async function requireSession() {
   return session
 }
 
+export async function requireUser() {
+  const supabase = createServerClient()
+  const { data: { user }, error } = await supabase.auth.getUser()
+  if (error || !user) redirect('/login')
+  return user
+}
+
 export async function requireAdmin() {
-  const session = await requireSession()
+  const user = await requireUser()
   const supabase = createServerClient()
 
   const { data: profile, error } = await supabase
     .from('profiles')
     .select('role')
-    .eq('id', session.user.id)
+    .eq('id', user.id)
     .single()
 
   if (error || !profile) {
@@ -26,12 +33,25 @@ export async function requireAdmin() {
     redirect('/dashboard')
   }
 
-  return session
+  return user
 }
 
 export async function isAdmin(userId?: string) {
   const supabase = createServerClient()
-  const targetUserId = userId || (await requireSession()).user.id
+
+  // If userId is provided, we still need to verify it belongs to the authenticated user
+  let targetUserId: string
+
+  if (userId) {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user || user.id !== userId) {
+      return false
+    }
+    targetUserId = user.id
+  } else {
+    const user = await requireUser()
+    targetUserId = user.id
+  }
 
   const { data: profile, error } = await supabase
     .from('profiles')
@@ -48,7 +68,19 @@ export async function isAdmin(userId?: string) {
 
 export async function isModerator(userId?: string) {
   const supabase = createServerClient()
-  const targetUserId = userId || (await requireSession()).user.id
+
+  let targetUserId: string
+
+  if (userId) {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user || user.id !== userId) {
+      return false
+    }
+    targetUserId = user.id
+  } else {
+    const user = await requireUser()
+    targetUserId = user.id
+  }
 
   const { data: profile, error } = await supabase
     .from('profiles')
@@ -65,7 +97,19 @@ export async function isModerator(userId?: string) {
 
 export async function getUserRole(userId?: string) {
   const supabase = createServerClient()
-  const targetUserId = userId || (await requireSession()).user.id
+
+  let targetUserId: string
+
+  if (userId) {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user || user.id !== userId) {
+      return 'user'
+    }
+    targetUserId = user.id
+  } else {
+    const user = await requireUser()
+    targetUserId = user.id
+  }
 
   const { data: profile, error } = await supabase
     .from('profiles')

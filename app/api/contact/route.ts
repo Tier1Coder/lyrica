@@ -15,16 +15,14 @@ export async function POST(req: Request) {
     const parsed = ContactSchema.safeParse(json)
     if (!parsed.success) return NextResponse.json({ error: 'Invalid input' }, { status: 400 })
 
-    const {
-      data: { session },
-    } = await supabase.auth.getSession()
+    const { data: { user } } = await supabase.auth.getUser()
 
-    if (!session?.user) {
+    if (!user) {
       return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
     }
 
     const { name, message } = parsed.data
-    const userEmail = session.user.email
+    const userEmail = user.email
 
     if (!userEmail) {
       return NextResponse.json({ error: 'User email not found' }, { status: 400 })
@@ -34,7 +32,7 @@ export async function POST(req: Request) {
       name,
       email: userEmail,
       message,
-      user_id: session.user.id,
+      user_id: user.id,
     })
 
     if (error) throw error

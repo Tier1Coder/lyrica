@@ -74,14 +74,14 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const supabase = createRouteClient()
-    const { data: { session } } = await supabase.auth.getSession()
+    const { data: { user } } = await supabase.auth.getUser()
 
-    if (!session) {
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Check if user is admin
-    const adminCheck = await isAdmin(session.user.id)
+    // Check if user is admin using authenticated user data
+    const adminCheck = await isAdmin()
     if (!adminCheck) {
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
     }
@@ -106,7 +106,7 @@ export async function POST(request: Request) {
         ...bookingData,
         start_time,
         end_time,
-        user_id: session.user.id, // Track who created the booking
+        user_id: user.id, // Track who created the booking
       })
       .select()
       .single()

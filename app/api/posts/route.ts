@@ -28,8 +28,8 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const supabase = createRouteClient()
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const json = await req.json()
     const parsed = PostSchema.safeParse(json)
@@ -48,7 +48,7 @@ export async function POST(req: Request) {
       .insert({
         title,
         content,
-        author_id: session.user.id,
+        author_id: user.id,
         published_at: publish ? new Date().toISOString() : null,
       })
       .select('id')

@@ -13,9 +13,9 @@ const CreateBookingSchema = z.object({
 export async function GET() {
   try {
     const supabase = createRouteClient()
-    const { data: { session } } = await supabase.auth.getSession()
+    const { data: { user } } = await supabase.auth.getUser()
 
-    if (!session) {
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -33,7 +33,7 @@ export async function GET() {
           price
         )
       `)
-      .eq('user_id', session.user.id)
+      .eq('user_id', user.id)
       .order('created_at', { ascending: false })
 
     if (error) throw error
@@ -49,9 +49,9 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const supabase = createRouteClient()
-    const { data: { session } } = await supabase.auth.getSession()
+    const { data: { user } } = await supabase.auth.getUser()
 
-    if (!session) {
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -92,7 +92,7 @@ export async function POST(request: Request) {
     const { data, error } = await supabase
       .from('user_bookings')
       .insert({
-        user_id: session.user.id,
+        user_id: user.id,
         booking_id,
         booking_reference: bookingReference,
         number_of_participants,
