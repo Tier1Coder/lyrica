@@ -5,10 +5,11 @@ import { safeErrorMessage } from '@/lib/utils'
 // PUT /api/bookings/[id] - Update booking (admin only)
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
-    const supabase = createRouteClient()
+    const supabase = await createRouteClient()
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) {
@@ -37,7 +38,7 @@ export async function PUT(
         ...json,
         updated_at: new Date().toISOString()
       })
-      .eq('id', params.id)
+      .eq('id', id)
       .select()
       .single()
 
@@ -53,10 +54,11 @@ export async function PUT(
 // DELETE /api/bookings/[id] - Delete booking (admin only)
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
-    const supabase = createRouteClient()
+    const supabase = await createRouteClient()
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) {
@@ -81,7 +83,7 @@ export async function DELETE(
     const { error } = await supabase
       .from('bookings')
       .delete()
-      .eq('id', params.id)
+      .eq('id', id)
 
     if (error) throw error
 

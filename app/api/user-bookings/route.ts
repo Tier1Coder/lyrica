@@ -12,7 +12,7 @@ const CreateBookingSchema = z.object({
 // GET /api/user-bookings - Get user's bookings
 export async function GET() {
   try {
-    const supabase = createRouteClient()
+    const supabase = await createRouteClient()
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) {
@@ -48,7 +48,7 @@ export async function GET() {
 // POST /api/user-bookings - Create a new booking reservation
 export async function POST(request: Request) {
   try {
-    const supabase = createRouteClient()
+    const supabase = await createRouteClient()
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) {

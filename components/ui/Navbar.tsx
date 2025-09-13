@@ -6,7 +6,7 @@ import LogoutButton from './LogoutButton'
 import { isAdmin } from '@/lib/auth'
 
 export default async function Navbar() {
-  const supabase = createServerClient()
+  const supabase = await createServerClient()
   const {
     data: { session },
   } = await supabase.auth.getSession()

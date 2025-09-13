@@ -6,7 +6,7 @@ import ContactClient from './ui'
 export default async function ContactPage() {
   if (!features.useContact) return notFound()
 
-  const supabase = createServerClient()
+  const supabase = await createServerClient()
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {

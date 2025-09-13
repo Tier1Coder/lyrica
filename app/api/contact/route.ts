@@ -10,7 +10,7 @@ const ContactSchema = z.object({
 
 export async function POST(req: Request) {
   try {
-    const supabase = createRouteClient()
+    const supabase = await createRouteClient()
     const json = await req.json()
     const parsed = ContactSchema.safeParse(json)
     if (!parsed.success) return NextResponse.json({ error: 'Invalid input' }, { status: 400 })

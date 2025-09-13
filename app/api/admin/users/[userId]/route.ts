@@ -5,7 +5,7 @@ import { safeErrorMessage } from '@/lib/utils'
 // GET /api/admin/users - Get all users (admin only)
 export async function GET(request: Request) {
   try {
-    const supabase = createRouteClient()
+    const supabase = await createRouteClient()
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) {
@@ -45,10 +45,11 @@ export async function GET(request: Request) {
 // POST /api/admin/users/[userId]/promote - Promote user to admin (admin only)
 export async function POST(
   request: Request,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
+  const { userId } = await params
   try {
-    const supabase = createRouteClient()
+    const supabase = await createRouteClient()
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) {
@@ -82,7 +83,7 @@ export async function POST(
         role,
         updated_at: new Date().toISOString()
       })
-      .eq('id', params.userId)
+      .eq('id', userId)
       .select()
       .single()
 

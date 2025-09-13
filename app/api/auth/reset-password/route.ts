@@ -9,7 +9,7 @@ const ResetPasswordSchema = z.object({
 
 export async function POST(request: Request) {
   try {
-    const supabase = createRouteClient()
+    const supabase = await createRouteClient()
     const json = await request.json()
     const parsed = ResetPasswordSchema.safeParse(json)
 

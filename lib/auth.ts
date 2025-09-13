@@ -2,14 +2,14 @@ import { redirect } from 'next/navigation'
 import { createServerClient } from './supabase/server'
 
 export async function requireSession() {
-  const supabase = createServerClient()
+  const supabase = await createServerClient()
   const { data: { session } } = await supabase.auth.getSession()
   if (!session) redirect('/login')
   return session
 }
 
 export async function requireUser() {
-  const supabase = createServerClient()
+  const supabase = await createServerClient()
   const { data: { user }, error } = await supabase.auth.getUser()
   if (error || !user) redirect('/login')
   return user
@@ -17,7 +17,7 @@ export async function requireUser() {
 
 export async function requireAdmin() {
   const user = await requireUser()
-  const supabase = createServerClient()
+  const supabase = await createServerClient()
 
   const { data: profile, error } = await supabase
     .from('profiles')
@@ -37,7 +37,7 @@ export async function requireAdmin() {
 }
 
 export async function isAdmin(userId?: string) {
-  const supabase = createServerClient()
+  const supabase = await createServerClient()
 
   // If userId is provided, we still need to verify it belongs to the authenticated user
   let targetUserId: string
@@ -67,7 +67,7 @@ export async function isAdmin(userId?: string) {
 }
 
 export async function isModerator(userId?: string) {
-  const supabase = createServerClient()
+  const supabase = await createServerClient()
 
   let targetUserId: string
 
@@ -96,7 +96,7 @@ export async function isModerator(userId?: string) {
 }
 
 export async function getUserRole(userId?: string) {
-  const supabase = createServerClient()
+  const supabase = await createServerClient()
 
   let targetUserId: string
 

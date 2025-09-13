@@ -5,7 +5,7 @@ import { safeErrorMessage } from '@/lib/utils'
 // GET /api/admin/users - Get all users (admin only)
 export async function GET(request: Request) {
   try {
-    const supabase = createRouteClient()
+    const supabase = await createRouteClient()
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) {

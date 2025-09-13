@@ -11,7 +11,7 @@ const PostSchema = z.object({
 
 export async function GET() {
   try {
-    const supabase = createRouteClient()
+    const supabase = await createRouteClient()
     // RLS allows: published posts for all, and authors see own
     const { data, error } = await supabase
       .from('posts')
@@ -27,7 +27,7 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const supabase = createRouteClient()
+    const supabase = await createRouteClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 

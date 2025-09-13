@@ -4,10 +4,11 @@ import { createServerClient } from '@/lib/supabase/server'
 import ReactMarkdown from 'react-markdown'
 import rehypeSanitize from 'rehype-sanitize'
 
-export default async function BlogDetailPage({ params }: Readonly<{ params: { id: string } }>) {
+export default async function BlogDetailPage({ params }: Readonly<{ params: Promise<{ id: string }> }>) {
+  const { id } = await params
   if (!features.useBlog) return notFound()
-  const supabase = createServerClient()
-  const { data: post, error } = await supabase.from('posts').select('*').eq('id', params.id).single()
+  const supabase = await createServerClient()
+  const { data: post, error } = await supabase.from('posts').select('*').eq('id', id).single()
   if (error) {
     console.error('blog detail error', error)
     return notFound()

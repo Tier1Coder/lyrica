@@ -24,7 +24,7 @@ const UserBookingSchema = z.object({
 // GET /api/bookings - Get all available booking slots
 export async function GET(request: Request) {
   try {
-    const supabase = createRouteClient()
+    const supabase = await createRouteClient()
     const { searchParams } = new URL(request.url)
     const activity_type = searchParams.get('activity_type')
     const date = searchParams.get('date')
@@ -73,7 +73,7 @@ export async function GET(request: Request) {
 // POST /api/bookings - Create a new booking slot (admin only)
 export async function POST(request: Request) {
   try {
-    const supabase = createRouteClient()
+    const supabase = await createRouteClient()
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) {
