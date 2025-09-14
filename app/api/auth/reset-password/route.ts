@@ -22,32 +22,14 @@ export async function POST(request: Request) {
 
     const { email } = parsed.data
 
-    // Check if user exists (optional - Supabase will handle this)
-    const { data: user, error: userError } = await supabase
-      .from('profiles')
-      .select('id')
-      .eq('email', email)
-      .single()
-
-    if (userError || !user) {
-      // Don't reveal if email exists or not for security
-      // Just return success message
-      return NextResponse.json({
-        message: 'If an account with that email exists, a password reset link has been sent.'
-      })
-    }
-
-    // Send password reset email
+    // Always attempt to send password reset email; Supabase will handle email existence internally
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/reset-password`,
     })
 
+    // Always return the same generic message, regardless of error
     if (error) {
       console.error('Password reset error:', error)
-      return NextResponse.json(
-        { error: 'Failed to send password reset email. Please try again.' },
-        { status: 500 }
-      )
     }
 
     return NextResponse.json({
