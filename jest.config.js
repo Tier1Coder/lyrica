@@ -10,6 +10,11 @@ const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   reporters: [
     'default',
+    ['jest-junit', {
+      outputDirectory: 'coverage',
+      outputName: 'test-report.xml',
+      suiteName: 'Lyrica Test Suite',
+    }],
   ],
   moduleNameMapper: {
     // Handle module aliases (this will be automatically configured for you based on your tsconfig.json paths)
