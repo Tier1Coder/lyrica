@@ -22,6 +22,9 @@ pnpm-debug.log*
 .eslintcache
 *.tsbuildinfo
 
+# Playwright MCP
+.playwright-mcp/
+
 # Test/coverage output
 coverage/
 .nyc_output/
