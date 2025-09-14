@@ -44,19 +44,6 @@ Run SQL in Supabase SQL editor from `ai/sql/lyrica-complete-database-schema.sql`
 - Blog: `/blog` list, `/blog/new` create, `/blog/[id]` detail. Markdown is sanitized.
 - Contact: `/contact` posts to `/api/contact` with server validation.
 
-## Export Tool
-
-Generate customized versions of your application with only the features you need:
-
-```bash
-# Export minimal app (core + auth)
-node export-tool/export-app.js --profile minimal --output ./my-minimal-app
-
-# Export with specific features
-node export-tool/export-app.js --features auth,blog --output ./my-custom-app
-```
-
-See `export-tool/README.md` and `ai/docs/EXPORT-SYSTEM-README.md` for detailed documentation.
 
 ## Security
 - Do not commit `.env*` files. Only use env vars for secrets.
