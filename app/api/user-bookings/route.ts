@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { createRouteClient } from '@/lib/supabase/route'
 import { z } from 'zod'
 import { safeErrorMessage } from '@/lib/utils'
+import { nanoid } from 'nanoid'
 
 const CreateBookingSchema = z.object({
   booking_id: z.uuid(),
@@ -82,8 +83,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Not enough spots available' }, { status: 400 })
     }
 
-    // Generate unique booking reference
-    const bookingReference = `BK${Date.now()}${Math.random().toString(36).substring(2, 7).toUpperCase()}`
+    // Generate unique booking reference using cryptographically secure nanoid
+    const bookingReference = `BK${Date.now()}${nanoid(10).toUpperCase()}`
 
     // Calculate total price
     const totalPrice = booking.price ? booking.price * number_of_participants : null
