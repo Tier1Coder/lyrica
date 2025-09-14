@@ -11,11 +11,13 @@ export const createServerClient = async () =>
           const cookieStore = await cookies()
           return cookieStore.getAll()
         },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(async ({ name, value, options }) => {
-            const cookieStore = await cookies()
-            cookieStore.set(name, value, options)
-          })
+        async setAll(cookiesToSet) {
+          await Promise.all(
+            cookiesToSet.map(async ({ name, value, options }) => {
+              const cookieStore = await cookies()
+              cookieStore.set(name, value, options)
+            })
+          )
         },
       },
     }
