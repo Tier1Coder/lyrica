@@ -34,8 +34,16 @@ jobs:
         run: |
           if [ -f coverage/lcov.info ]; then echo "lcov found"; wc -l coverage/lcov.info; else echo "lcov missing"; exit 1; fi
 
+      - name: Ensure SONAR_TOKEN is set
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          if [ -z "$SONAR_TOKEN" ]; then echo "::error::SONAR_TOKEN secret is missing. Please add it to repository secrets."; exit 1; else echo "SONAR_TOKEN present"; fi
+
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
+        uses: SonarSource/sonarqube-scan-action@v5.0.0
+        with:
+          args: ''
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
