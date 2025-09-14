@@ -9,10 +9,11 @@ const PatchSchema = z.object({
   publish: z.boolean().optional(),
 })
 
-export async function GET(_: Request, { params }: { params: { id: string } }) {
+export async function GET(_: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   try {
-    const supabase = createRouteClient()
-    const { data, error } = await supabase.from('posts').select('*').eq('id', params.id).single()
+    const supabase = await createRouteClient()
+    const { data, error } = await supabase.from('posts').select('*').eq('id', id).single()
     if (error) throw error
     return NextResponse.json(data)
   } catch (e) {
@@ -21,11 +22,12 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
   }
 }
 
-export async function PATCH(req: Request, { params }: { params: { id: string } }) {
+export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   try {
-    const supabase = createRouteClient()
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const supabase = await createRouteClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const json = await req.json()
     const parsed = PatchSchema.safeParse(json)
     if (!parsed.success) return NextResponse.json({ error: 'Invalid input' }, { status: 400 })
@@ -36,8 +38,8 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
     const { error } = await supabase
       .from('posts')
       .update(update)
-      .eq('id', params.id)
-      .eq('author_id', session.user.id)
+      .eq('id', id)
+      .eq('author_id', user.id)
     if (error) throw error
     return NextResponse.json({ ok: true })
   } catch (e) {
@@ -46,12 +48,13 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   }
 }
 
-export async function DELETE(_: Request, { params }: { params: { id: string } }) {
+export async function DELETE(_: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   try {
-    const supabase = createRouteClient()
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    const { error } = await supabase.from('posts').delete().eq('id', params.id).eq('author_id', session.user.id)
+    const supabase = await createRouteClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const { error } = await supabase.from('posts').delete().eq('id', id).eq('author_id', user.id)
     if (error) throw error
     return NextResponse.json({ ok: true })
   } catch (e) {

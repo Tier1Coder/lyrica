@@ -36,7 +36,7 @@ Navigation and routes reflect these flags. Disabled pages return 404.
 - Supabase Auth helpers provide server and route handler clients.
 
 ## Database Schema (Supabase)
-Run SQL in Supabase SQL editor from `PLAN.md` (events, posts, messages) to create tables and RLS policies.
+Run SQL in Supabase SQL editor from `ai/sql/lyrica-complete-database-schema.sql` to create tables and RLS policies.
 
 ## Modules
 - Calendar: `/calendar` CRUD via API routes, RLS restricts to owner.
@@ -44,9 +44,6 @@ Run SQL in Supabase SQL editor from `PLAN.md` (events, posts, messages) to creat
 - Blog: `/blog` list, `/blog/new` create, `/blog/[id]` detail. Markdown is sanitized.
 - Contact: `/contact` posts to `/api/contact` with server validation.
 
-## Theming
-- Dark mode toggle (stores preference in `localStorage`).
-- Colors are CSS variables in `app/globals.css` and mapped in `tailwind.config.ts`.
 
 ## Security
 - Do not commit `.env*` files. Only use env vars for secrets.

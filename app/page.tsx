@@ -22,6 +22,7 @@ export default function HomePage() {
           <h2>Modules</h2>
           <ul className="mt-2 list-disc list-inside text-sm">
             {features.useCalendar && <li><Link className="text-primary underline" href="/calendar">Calendar</Link></li>}
+            {features.useBookings && <li><Link className="text-primary underline" href="/bookings">Bookings</Link></li>}
             {features.useMaps && <li><Link className="text-primary underline" href="/maps">Maps</Link></li>}
             {features.useBlog && <li><Link className="text-primary underline" href="/blog">Blog</Link></li>}
             {features.useContact && <li><Link className="text-primary underline" href="/contact">Contact</Link></li>}

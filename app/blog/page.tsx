@@ -5,7 +5,7 @@ import { createServerClient } from '@/lib/supabase/server'
 
 export default async function BlogListPage() {
   if (!features.useBlog) return notFound()
-  const supabase = createServerClient()
+  const supabase = await createServerClient()
   const { data: posts, error } = await supabase.from('posts').select('id,title,published_at,inserted_at').order('inserted_at', { ascending: false })
   if (error) console.error('blog list error', error)
   return (

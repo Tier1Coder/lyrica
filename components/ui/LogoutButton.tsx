@@ -1,11 +1,11 @@
 "use client"
 import { useRouter } from 'next/navigation'
 import Button from './Button'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createClient } from '@/lib/supabase/client'
 
 export default function LogoutButton() {
   const router = useRouter()
-  const supabase = createClientComponentClient()
+  const supabase = createClient()
   return (
     <Button
       variant="ghost"
