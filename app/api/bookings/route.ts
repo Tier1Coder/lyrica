@@ -16,7 +16,7 @@ const BookingSchema = z.object({
 })
 
 const UserBookingSchema = z.object({
-  booking_id: z.string().uuid(),
+  booking_id: z.uuid(),
   number_of_participants: z.number().min(1).max(20).default(1),
   special_requests: z.string().max(1000).optional(),
 })

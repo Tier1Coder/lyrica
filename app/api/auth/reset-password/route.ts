@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { safeErrorMessage } from '@/lib/utils'
 
 const ResetPasswordSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
+  email: z.email('Please enter a valid email address'),
 })
 
 export async function POST(request: Request) {
